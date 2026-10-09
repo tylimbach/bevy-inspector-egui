@@ -19,8 +19,6 @@ pub fn inspectable(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 }
 
 fn expand_struct(input: &DeriveInput, data: &DataStruct) -> syn::Result<TokenStream> {
-    let bevy_reflect = quote! { ::bevy_inspector_egui::__macro_exports::bevy_reflect };
-
     let fields = data
         .fields
         .iter()
@@ -55,7 +53,7 @@ fn expand_struct(input: &DeriveInput, data: &DataStruct) -> syn::Result<TokenStr
     let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
 
     Ok(quote! {
-        impl #impl_generics #bevy_reflect::FromType<#type_name #ty_generics> for ::bevy_inspector_egui::InspectorOptions
+        impl #impl_generics ::bevy_inspector_egui::inspector_options::FromType<#type_name #ty_generics> for ::bevy_inspector_egui::InspectorOptions
         #where_clause
         {
             fn from_type() -> Self {
@@ -70,8 +68,6 @@ fn expand_struct(input: &DeriveInput, data: &DataStruct) -> syn::Result<TokenStr
 }
 
 fn expand_enum(input: &DeriveInput, data: &DataEnum) -> syn::Result<TokenStream> {
-    let bevy_reflect = quote! { ::bevy_inspector_egui::__macro_exports::bevy_reflect };
-
     let fields = data
         .variants
         .iter()
@@ -120,7 +116,7 @@ fn expand_enum(input: &DeriveInput, data: &DataEnum) -> syn::Result<TokenStream>
     let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
 
     Ok(quote! {
-        impl #impl_generics #bevy_reflect::FromType<#type_name #ty_generics> for ::bevy_inspector_egui::InspectorOptions
+        impl #impl_generics ::bevy_inspector_egui::inspector_options::FromType<#type_name #ty_generics> for ::bevy_inspector_egui::InspectorOptions
         #where_clause
         {
             fn from_type() -> Self {

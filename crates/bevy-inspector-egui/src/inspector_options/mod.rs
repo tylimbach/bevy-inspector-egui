@@ -2,7 +2,7 @@
 
 use std::{any::Any, collections::HashMap};
 
-use bevy_reflect::{FromType, TypeData};
+use bevy_reflect::{CreateTypeData, TypeData};
 
 pub(crate) mod default_options;
 
@@ -96,11 +96,18 @@ impl InspectorOptions {
 #[derive(Clone)]
 pub struct ReflectInspectorOptions(pub InspectorOptions);
 
-impl<T> FromType<T> for ReflectInspectorOptions
+/// Builds a type's [`struct@InspectorOptions`], as the derive macro does:
+/// bevy_reflect 0.20 replaced its `FromType` with [`CreateTypeData`], which
+/// only builds type data, and `InspectorOptions` isn't (it isn't `Clone`).
+pub trait FromType<T> {
+    fn from_type() -> Self;
+}
+
+impl<T> CreateTypeData<T> for ReflectInspectorOptions
 where
     InspectorOptions: FromType<T>,
 {
-    fn from_type() -> Self {
+    fn create_type_data(_: ()) -> Self {
         ReflectInspectorOptions(InspectorOptions::from_type())
     }
 }

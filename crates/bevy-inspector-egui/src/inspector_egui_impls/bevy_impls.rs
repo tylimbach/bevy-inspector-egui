@@ -327,7 +327,10 @@ impl InspectorPrimitive for Color {
             | Color::Laba(_)
             | Color::Oklaba(_)
             | Color::Oklcha(_)
-            | Color::Xyza(_) => {
+            | Color::Xyza(_)
+            | Color::Okhsla(_)
+            | Color::Okhsva(_)
+            | Color::Okhwba(_) => {
                 ui.label(format!(
                     "Colorspace of {self:?} is not supported yet. PRs welcome"
                 ));
